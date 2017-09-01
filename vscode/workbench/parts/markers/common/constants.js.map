@@ -1,0 +1,1 @@
+{"version":3,"file":"constants.js","sourceRoot":"file:///Users/penlv/code/vscode/src","sources":["vs/workbench/parts/markers/common/constants.ts"],"names":[],"mappings":"AAAA;;;gGAGgG;;;;IAIhG,kBAAe;QACd,gBAAgB,EAAE,yBAAyB;QAC3C,qBAAqB,EAAE,sBAAsB;QAC7C,0BAA0B,EAAE,4BAA4B;QAExD,qBAAqB,EAAE,IAAI,0BAAa,CAAU,cAAc,EAAE,KAAK,CAAC;KACxE,CAAC"}

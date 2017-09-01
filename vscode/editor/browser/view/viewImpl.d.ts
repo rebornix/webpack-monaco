@@ -1,0 +1,75 @@
+import { FastDomNode } from 'vs/base/browser/fastDomNode';
+import { ICommandService } from 'vs/platform/commands/common/commands';
+import { ViewEventHandler } from 'vs/editor/common/viewModel/viewEventHandler';
+import { Configuration } from 'vs/editor/browser/config/configuration';
+import * as editorBrowser from 'vs/editor/browser/editorBrowser';
+import { ExecCoreEditorCommandFunc } from 'vs/editor/browser/view/viewController';
+import { OverviewRuler } from 'vs/editor/browser/viewParts/overviewRuler/overviewRuler';
+import { IViewModel } from 'vs/editor/common/viewModel/viewModel';
+import { ViewOutgoingEvents } from 'vs/editor/browser/view/viewOutgoingEvents';
+import * as viewEvents from 'vs/editor/common/view/viewEvents';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+import { Cursor } from 'vs/editor/common/controller/cursor';
+import { IMouseEvent } from 'vs/base/browser/mouseEvent';
+export interface IContentWidgetData {
+    widget: editorBrowser.IContentWidget;
+    position: editorBrowser.IContentWidgetPosition;
+}
+export interface IOverlayWidgetData {
+    widget: editorBrowser.IOverlayWidget;
+    position: editorBrowser.IOverlayWidgetPosition;
+}
+export declare class View extends ViewEventHandler {
+    private eventDispatcher;
+    private _scrollbar;
+    private _context;
+    private _cursor;
+    private viewLines;
+    private viewZones;
+    private contentWidgets;
+    private overlayWidgets;
+    private viewCursors;
+    private viewParts;
+    private readonly _textAreaHandler;
+    private readonly pointerHandler;
+    private readonly outgoingEvents;
+    private linesContent;
+    domNode: FastDomNode<HTMLElement>;
+    private overflowGuardContainer;
+    private _isDisposed;
+    private _renderAnimationFrame;
+    constructor(commandService: ICommandService, configuration: Configuration, themeService: IThemeService, model: IViewModel, cursor: Cursor, execCoreEditorCommandFunc: ExecCoreEditorCommandFunc);
+    private createViewParts();
+    private _flushAccumulatedAndRenderNow();
+    private createPointerHandlerHelper();
+    private createTextAreaHandlerHelper();
+    private _setLayout();
+    private getEditorClassName();
+    onConfigurationChanged(e: viewEvents.ViewConfigurationChangedEvent): boolean;
+    onFocusChanged(e: viewEvents.ViewFocusChangedEvent): boolean;
+    onScrollChanged(e: viewEvents.ViewScrollChangedEvent): boolean;
+    onThemeChanged(e: viewEvents.ViewThemeChangedEvent): boolean;
+    dispose(): void;
+    private _renderOnce(callback);
+    private _scheduleRender();
+    private _onRenderScheduled();
+    private _renderNow();
+    private _getViewPartsToRender();
+    private _actualRender();
+    delegateVerticalScrollbarMouseDown(browserEvent: IMouseEvent): void;
+    getOffsetForColumn(modelLineNumber: number, modelColumn: number): number;
+    getTargetAtClientPoint(clientX: number, clientY: number): editorBrowser.IMouseTarget;
+    getInternalEventBus(): ViewOutgoingEvents;
+    createOverviewRuler(cssClassName: string, minimumHeight: number, maximumHeight: number): OverviewRuler;
+    change(callback: (changeAccessor: editorBrowser.IViewZoneChangeAccessor) => any): boolean;
+    render(now: boolean, everything: boolean): void;
+    setAriaActiveDescendant(id: string): void;
+    focus(): void;
+    isFocused(): boolean;
+    addContentWidget(widgetData: IContentWidgetData): void;
+    layoutContentWidget(widgetData: IContentWidgetData): void;
+    removeContentWidget(widgetData: IContentWidgetData): void;
+    addOverlayWidget(widgetData: IOverlayWidgetData): void;
+    layoutOverlayWidget(widgetData: IOverlayWidgetData): void;
+    removeOverlayWidget(widgetData: IOverlayWidgetData): void;
+}

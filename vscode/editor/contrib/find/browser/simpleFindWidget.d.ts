@@ -1,0 +1,35 @@
+import 'vs/css!./simpleFindWidget';
+import { Widget } from 'vs/base/browser/ui/widget';
+import { Delayer } from 'vs/base/common/async';
+import { HistoryNavigator } from 'vs/base/common/history';
+import * as dom from 'vs/base/browser/dom';
+import { FindInput } from 'vs/base/browser/ui/findinput/findInput';
+import { IContextViewService } from 'vs/platform/contextview/browser/contextView';
+import { ITheme } from 'vs/platform/theme/common/themeService';
+export declare abstract class SimpleFindWidget extends Widget {
+    private _contextViewService;
+    private animate;
+    protected _findInput: FindInput;
+    protected _domNode: HTMLElement;
+    protected _isVisible: boolean;
+    protected _focusTracker: dom.IFocusTracker;
+    protected _findInputFocusTracker: dom.IFocusTracker;
+    protected _findHistory: HistoryNavigator<string>;
+    protected _updateHistoryDelayer: Delayer<void>;
+    constructor(_contextViewService: IContextViewService, animate?: boolean);
+    protected abstract onInputChanged(): any;
+    protected abstract find(previous: boolean): any;
+    protected abstract onFocusTrackerFocus(): any;
+    protected abstract onFocusTrackerBlur(): any;
+    protected abstract onFindInputFocusTrackerFocus(): any;
+    protected abstract onFindInputFocusTrackerBlur(): any;
+    protected readonly inputValue: string;
+    updateTheme(theme?: ITheme): void;
+    getDomNode(): HTMLElement;
+    reveal(initialInput?: string): void;
+    hide(): void;
+    protected _delayedUpdateHistory(): void;
+    protected _updateHistory(): void;
+    showNextFindTerm(): void;
+    showPreviousFindTerm(): void;
+}

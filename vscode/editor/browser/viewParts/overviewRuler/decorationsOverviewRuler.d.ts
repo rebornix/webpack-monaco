@@ -1,0 +1,36 @@
+import { ViewPart } from 'vs/editor/browser/view/viewPart';
+import { ViewContext } from 'vs/editor/common/view/viewContext';
+import { RenderingContext, RestrictedRenderingContext } from 'vs/editor/common/view/renderingContext';
+import * as viewEvents from 'vs/editor/common/view/viewEvents';
+export declare class DecorationsOverviewRuler extends ViewPart {
+    static MIN_DECORATION_HEIGHT: number;
+    static MAX_DECORATION_HEIGHT: number;
+    private readonly _tokensColorTrackerListener;
+    private _overviewRuler;
+    private _renderBorder;
+    private _borderColor;
+    private _cursorColor;
+    private _shouldUpdateDecorations;
+    private _shouldUpdateCursorPosition;
+    private _hideCursor;
+    private _cursorPositions;
+    private _zonesFromDecorations;
+    private _zonesFromCursors;
+    constructor(context: ViewContext);
+    dispose(): void;
+    private _updateBackground(render);
+    onConfigurationChanged(e: viewEvents.ViewConfigurationChangedEvent): boolean;
+    onCursorStateChanged(e: viewEvents.ViewCursorStateChangedEvent): boolean;
+    onDecorationsChanged(e: viewEvents.ViewDecorationsChangedEvent): boolean;
+    onFlushed(e: viewEvents.ViewFlushedEvent): boolean;
+    onScrollChanged(e: viewEvents.ViewScrollChangedEvent): boolean;
+    onZonesChanged(e: viewEvents.ViewZonesChangedEvent): boolean;
+    onThemeChanged(e: viewEvents.ViewThemeChangedEvent): boolean;
+    getDomNode(): HTMLElement;
+    private _updateColors();
+    private _createZonesFromDecorations();
+    private resolveRulerColor(color);
+    private _createZonesFromCursors();
+    prepareRender(ctx: RenderingContext): void;
+    render(ctx: RestrictedRenderingContext): void;
+}

@@ -1,0 +1,151 @@
+import URI from 'vs/base/common/uri';
+import { Dimension } from 'vs/base/browser/builder';
+import { Disposable } from 'vs/base/common/lifecycle';
+import { Widget } from 'vs/base/browser/ui/widget';
+import Event from 'vs/base/common/event';
+import { ICodeEditor, IOverlayWidget, IOverlayWidgetPosition, IViewZone, IEditorMouseEvent } from 'vs/editor/browser/editorBrowser';
+import { InputBox, IInputOptions } from 'vs/base/browser/ui/inputbox/inputBox';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { IContextViewService, IContextMenuService } from 'vs/platform/contextview/browser/contextView';
+import { ISettingsGroup, IPreferencesService } from 'vs/workbench/parts/preferences/common/preferences';
+import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
+import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { IActionRunner } from 'vs/base/common/actions';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+import { IContextKey } from 'vs/platform/contextkey/common/contextkey';
+import { ISelectBoxStyles } from 'vs/base/browser/ui/selectBox/selectBox';
+import { ConfigurationTarget } from 'vs/workbench/services/configuration/common/configurationEditing';
+export declare class SettingsHeaderWidget extends Widget implements IViewZone {
+    private editor;
+    private title;
+    private id;
+    private _domNode;
+    private titleContainer;
+    private messageElement;
+    constructor(editor: ICodeEditor, title: string);
+    readonly domNode: HTMLElement;
+    readonly heightInLines: number;
+    readonly afterLineNumber: number;
+    private create();
+    setMessage(message: string): void;
+    private layout();
+    dispose(): void;
+}
+export declare class SettingsGroupTitleWidget extends Widget implements IViewZone {
+    private editor;
+    settingsGroup: ISettingsGroup;
+    private id;
+    private _afterLineNumber;
+    private _domNode;
+    private titleContainer;
+    private icon;
+    private title;
+    private _onToggled;
+    onToggled: Event<boolean>;
+    private previousPosition;
+    constructor(editor: ICodeEditor, settingsGroup: ISettingsGroup);
+    readonly domNode: HTMLElement;
+    readonly heightInLines: number;
+    readonly afterLineNumber: number;
+    private create();
+    render(): void;
+    toggleCollapse(collapse: boolean): void;
+    toggleFocus(focus: boolean): void;
+    isCollapsed(): boolean;
+    private layout();
+    private getIconSize(minSize);
+    private onKeyDown(keyboardEvent);
+    private toggle();
+    private collapse(collapse);
+    private onCursorChange(e);
+    private focusTitle(currentPosition);
+    dispose(): void;
+}
+export declare class SettingsTargetsWidget extends Widget {
+    private uri;
+    private target;
+    private workspaceContextService;
+    private preferencesService;
+    private contextMenuService;
+    actionRunner: IActionRunner;
+    private settingsTargetsContainer;
+    private targetLabel;
+    private targetDetails;
+    private _onDidTargetChange;
+    readonly onDidTargetChange: Event<URI>;
+    private borderColor;
+    constructor(parent: HTMLElement, uri: URI, target: ConfigurationTarget, workspaceContextService: IWorkspaceContextService, preferencesService: IPreferencesService, contextMenuService: IContextMenuService, themeService: IThemeService);
+    setTarget(uri: URI, target: ConfigurationTarget): void;
+    private create(parent);
+    private updateLabel();
+    private showContextMenu(event);
+    private getSettingsTargetsActions();
+    private onTargetClicked(target);
+    style(styles: ISelectBoxStyles): void;
+    private applyStyles();
+}
+export interface SearchOptions extends IInputOptions {
+    focusKey?: IContextKey<boolean>;
+}
+export declare class SearchWidget extends Widget {
+    protected options: SearchOptions;
+    private contextViewService;
+    private contextMenuService;
+    protected instantiationService: IInstantiationService;
+    private themeService;
+    domNode: HTMLElement;
+    private countElement;
+    private searchContainer;
+    private inputBox;
+    private _onDidChange;
+    readonly onDidChange: Event<string>;
+    private _onNavigate;
+    readonly onNavigate: Event<boolean>;
+    private _onFocus;
+    readonly onFocus: Event<void>;
+    constructor(parent: HTMLElement, options: SearchOptions, contextViewService: IContextViewService, contextMenuService: IContextMenuService, instantiationService: IInstantiationService, themeService: IThemeService);
+    private create(parent);
+    private createSearchContainer(searchContainer);
+    protected createInputBox(parent: HTMLElement): InputBox;
+    showMessage(message: string, count: number): void;
+    private styleCountElementForeground();
+    layout(dimension: Dimension): void;
+    focus(): void;
+    hasFocus(): boolean;
+    clear(): void;
+    getValue(): string;
+    setValue(value: string): string;
+    private _onKeyDown(keyboardEvent);
+    dispose(): void;
+}
+export declare class FloatingClickWidget extends Widget implements IOverlayWidget {
+    private editor;
+    private label;
+    private keyBindingAction;
+    private themeService;
+    private _domNode;
+    private _onClick;
+    onClick: Event<void>;
+    constructor(editor: ICodeEditor, label: string, keyBindingAction: string, keybindingService: IKeybindingService, themeService: IThemeService);
+    render(): void;
+    dispose(): void;
+    getId(): string;
+    getDomNode(): HTMLElement;
+    getPosition(): IOverlayWidgetPosition;
+}
+export declare class EditPreferenceWidget<T> extends Disposable {
+    private editor;
+    static GLYPH_MARGIN_CLASS_NAME: string;
+    private _line;
+    private _preferences;
+    private _editPreferenceDecoration;
+    private _onClick;
+    readonly onClick: Event<IEditorMouseEvent>;
+    constructor(editor: ICodeEditor);
+    readonly preferences: T[];
+    getLine(): number;
+    show(line: number, hoverMessage: string, preferences: T[]): void;
+    hide(): void;
+    isVisible(): boolean;
+    dispose(): void;
+}

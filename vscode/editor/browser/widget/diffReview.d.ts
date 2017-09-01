@@ -1,0 +1,35 @@
+import 'vs/css!./media/diffReview';
+import { Disposable } from 'vs/base/common/lifecycle';
+import { FastDomNode } from 'vs/base/browser/fastDomNode';
+import { DiffEditorWidget } from 'vs/editor/browser/widget/diffEditorWidget';
+export declare class DiffReview extends Disposable {
+    private readonly _diffEditor;
+    private _isVisible;
+    readonly shadow: FastDomNode<HTMLElement>;
+    private readonly _actionBar;
+    readonly actionBarContainer: FastDomNode<HTMLElement>;
+    readonly domNode: FastDomNode<HTMLElement>;
+    private readonly _content;
+    private readonly scrollbar;
+    private _diffs;
+    private _currentDiff;
+    constructor(diffEditor: DiffEditorWidget);
+    prev(): void;
+    next(): void;
+    private accept();
+    private hide();
+    private _getPrevRow();
+    private _getNextRow();
+    private _getFirstRow();
+    private _getCurrentFocusedRow();
+    private _goToRow(row);
+    isVisible(): boolean;
+    private _width;
+    layout(top: number, width: number, height: number): void;
+    private _compute();
+    private static _mergeAdjacent(lineChanges, originalLineCount, modifiedLineCount);
+    private _findDiffIndex(pos);
+    private _render();
+    private static _renderSection(dest, diffEntry, modLine, width, originalOpts, originalModel, originalModelOpts, modifiedOpts, modifiedModel, modifiedModelOpts);
+    private static _renderLine(model, config, tabSize, lineNumber);
+}

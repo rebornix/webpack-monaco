@@ -1,0 +1,32 @@
+import Event from 'vs/base/common/event';
+import { TPromise } from 'vs/base/common/winjs.base';
+import { IMode, LanguageId, LanguageIdentifier } from 'vs/editor/common/modes';
+import { IModeLookupResult, IModeService } from 'vs/editor/common/services/modeService';
+export declare class ModeServiceImpl implements IModeService {
+    _serviceBrand: any;
+    private readonly _instantiatedModes;
+    private readonly _registry;
+    private readonly _onDidCreateMode;
+    readonly onDidCreateMode: Event<IMode>;
+    constructor();
+    protected _onReady(): TPromise<boolean>;
+    isRegisteredMode(mimetypeOrModeId: string): boolean;
+    getRegisteredModes(): string[];
+    getRegisteredLanguageNames(): string[];
+    getExtensions(alias: string): string[];
+    getFilenames(alias: string): string[];
+    getMimeForMode(modeId: string): string;
+    getLanguageName(modeId: string): string;
+    getModeIdForLanguageName(alias: string): string;
+    getModeIdByFilenameOrFirstLine(filename: string, firstLine?: string): string;
+    getModeId(commaSeparatedMimetypesOrCommaSeparatedIds: string): string;
+    getLanguageIdentifier(modeId: string | LanguageId): LanguageIdentifier;
+    getConfigurationFiles(modeId: string): string[];
+    lookup(commaSeparatedMimetypesOrCommaSeparatedIds: string): IModeLookupResult[];
+    getMode(commaSeparatedMimetypesOrCommaSeparatedIds: string): IMode;
+    getOrCreateMode(commaSeparatedMimetypesOrCommaSeparatedIds: string): TPromise<IMode>;
+    getOrCreateModeByLanguageName(languageName: string): TPromise<IMode>;
+    private _getModeIdByLanguageName(languageName);
+    getOrCreateModeByFilenameOrFirstLine(filename: string, firstLine?: string): TPromise<IMode>;
+    private _getOrCreateMode(modeId);
+}

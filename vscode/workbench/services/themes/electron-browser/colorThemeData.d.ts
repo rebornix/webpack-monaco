@@ -1,0 +1,34 @@
+import { Color } from 'vs/base/common/color';
+import { ExtensionData, ITokenColorCustomizations, ITokenColorizationRule, IColorTheme, IColorMap, IThemeExtensionPoint } from 'vs/workbench/services/themes/common/workbenchThemeService';
+import { TPromise } from 'vs/base/common/winjs.base';
+import { ColorIdentifier } from 'vs/platform/theme/common/colorRegistry';
+import { ThemeType } from 'vs/platform/theme/common/themeService';
+import { WorkbenchThemeService, IColorCustomizations } from 'vs/workbench/services/themes/electron-browser/workbenchThemeService';
+export declare class ColorThemeData implements IColorTheme {
+    constructor();
+    id: string;
+    label: string;
+    settingsId: string;
+    description?: string;
+    readonly tokenColors: ITokenColorizationRule[];
+    themeTokenColors: ITokenColorizationRule[];
+    customTokenColors: ITokenColorizationRule[];
+    isLoaded: boolean;
+    path?: string;
+    extensionData: ExtensionData;
+    colorMap: IColorMap;
+    customColorMap: IColorMap;
+    getColor(colorId: ColorIdentifier, useDefault?: boolean): Color;
+    getDefault(colorId: ColorIdentifier): Color;
+    defines(colorId: ColorIdentifier): boolean;
+    setCustomColors(colors: IColorCustomizations): void;
+    setCustomTokenColors(customTokenColors: ITokenColorCustomizations): void;
+    ensureLoaded(themeService: WorkbenchThemeService): TPromise<void>;
+    toThemeFile(): string;
+    toStorageData(): string;
+    hasEqualData(other: ColorThemeData): boolean;
+    readonly type: ThemeType;
+}
+export declare function createUnloadedTheme(id: string): ColorThemeData;
+export declare function fromStorageData(input: string): ColorThemeData;
+export declare function fromExtensionTheme(theme: IThemeExtensionPoint, normalizedAbsolutePath: string, extensionData: ExtensionData): ColorThemeData;

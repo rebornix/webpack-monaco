@@ -1,0 +1,1 @@
+{"version":3,"file":"backup.js","sourceRoot":"file:///Users/penlv/code/vscode/src","sources":["vs/workbench/services/backup/common/backup.ts"],"names":[],"mappings":"AAAA;;;gGAGgG;;IAEhG,YAAY,CAAC;;IAQA,QAAA,kBAAkB,GAAG,+BAAe,CAAqB,mBAAmB,CAAC,CAAC;IAE9E,QAAA,2BAA2B,GAA2B,EAAE,cAAc,EAAE,IAAI,EAAE,QAAQ,EAAE,OAAO,EAAE,CAAC;IAClG,QAAA,0BAA0B,GAA0B,EAAE,QAAQ,EAAE,OAAO,EAAE,CAAC"}

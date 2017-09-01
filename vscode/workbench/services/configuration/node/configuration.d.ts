@@ -1,0 +1,97 @@
+import URI from 'vs/base/common/uri';
+import { TPromise } from 'vs/base/common/winjs.base';
+import Event, { Emitter } from 'vs/base/common/event';
+import { StrictResourceMap } from 'vs/base/common/map';
+import { Disposable } from 'vs/base/common/lifecycle';
+import { IWorkspaceContextService, IWorkspace, Workspace, ILegacyWorkspace, LegacyWorkspace } from 'vs/platform/workspace/common/workspace';
+import { FileChangesEvent } from 'vs/platform/files/common/files';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { FolderConfigurationModel } from 'vs/workbench/services/configuration/common/configurationModels';
+import { IConfigurationServiceEvent, IConfigurationKeys, IConfigurationValue, ConfigurationModel, IConfigurationOverrides, Configuration as BaseConfiguration, IConfigurationValues, IConfigurationData } from 'vs/platform/configuration/common/configuration';
+import { IWorkspaceConfigurationService } from 'vs/workbench/services/configuration/common/configuration';
+import { IWorkspacesService, IWorkspaceIdentifier, ISingleFolderWorkspaceIdentifier } from 'vs/platform/workspaces/common/workspaces';
+export declare class WorkspaceService extends Disposable implements IWorkspaceConfigurationService, IWorkspaceContextService {
+    _serviceBrand: any;
+    protected workspace: Workspace;
+    protected legacyWorkspace: LegacyWorkspace;
+    protected _configuration: Configuration<any>;
+    protected readonly _onDidUpdateConfiguration: Emitter<IConfigurationServiceEvent>;
+    readonly onDidUpdateConfiguration: Event<IConfigurationServiceEvent>;
+    protected readonly _onDidChangeWorkspaceRoots: Emitter<void>;
+    readonly onDidChangeWorkspaceRoots: Event<void>;
+    protected readonly _onDidChangeWorkspaceName: Emitter<void>;
+    readonly onDidChangeWorkspaceName: Event<void>;
+    constructor();
+    getLegacyWorkspace(): ILegacyWorkspace;
+    getWorkspace(): IWorkspace;
+    hasWorkspace(): boolean;
+    hasFolderWorkspace(): boolean;
+    hasMultiFolderWorkspace(): boolean;
+    getRoot(resource: URI): URI;
+    private readonly workspaceUri;
+    isInsideWorkspace(resource: URI): boolean;
+    toResource(workspaceRelativePath: string): URI;
+    initialize(trigger?: boolean): TPromise<any>;
+    reloadConfiguration(section?: string): TPromise<any>;
+    getConfigurationData<T>(): IConfigurationData<T>;
+    getConfiguration<C>(section?: string, overrides?: IConfigurationOverrides): C;
+    lookup<C>(key: string, overrides?: IConfigurationOverrides): IConfigurationValue<C>;
+    keys(overrides?: IConfigurationOverrides): IConfigurationKeys;
+    values<V>(): IConfigurationValues;
+    getUnsupportedWorkspaceKeys(): string[];
+    isInWorkspaceContext(): boolean;
+    protected triggerConfigurationChange(): void;
+    handleWorkspaceFileEvents(event: FileChangesEvent): void;
+    protected resetCaches(): void;
+    protected updateConfiguration(): TPromise<boolean>;
+}
+export declare class EmptyWorkspaceServiceImpl extends WorkspaceService {
+    private baseConfigurationService;
+    constructor(environmentService: IEnvironmentService);
+    reloadConfiguration(section?: string): TPromise<any>;
+    private onBaseConfigurationChanged({source, sourceConfig});
+    protected resetCaches(): void;
+    protected triggerConfigurationChange(): void;
+}
+export declare class WorkspaceServiceImpl extends WorkspaceService {
+    private workspaceIdentifier;
+    private environmentService;
+    private workspacesService;
+    private workspaceSettingsRootFolder;
+    _serviceBrand: any;
+    private workspaceConfigPath;
+    private folderPath;
+    private baseConfigurationService;
+    private workspaceConfiguration;
+    private cachedFolderConfigs;
+    constructor(workspaceIdentifier: IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier, environmentService: IEnvironmentService, workspacesService: IWorkspacesService, workspaceSettingsRootFolder?: string);
+    getUnsupportedWorkspaceKeys(): string[];
+    initialize(trigger?: boolean): TPromise<any>;
+    reloadConfiguration(section?: string): TPromise<any>;
+    handleWorkspaceFileEvents(event: FileChangesEvent): void;
+    protected resetCaches(): void;
+    private initializeWorkspace();
+    private initializeMulitFolderWorkspace();
+    private parseWorkspaceFolders(configuredFolders);
+    private registerWorkspaceConfigSchema();
+    private initializeSingleFolderWorkspace();
+    private initCachesForFolders(folders);
+    protected updateConfiguration(folders?: URI[]): TPromise<boolean>;
+    private onBaseConfigurationChanged({source, sourceConfig});
+    private onWorkspaceConfigurationChanged();
+    private onFoldersChanged();
+    private updateFolderConfiguration(folder, folderConfiguration, compare);
+    private updateWorkspaceConfiguration(compare);
+    protected triggerConfigurationChange(): void;
+}
+export declare class Configuration<T> extends BaseConfiguration<T> {
+    private _baseConfiguration;
+    protected folders: StrictResourceMap<FolderConfigurationModel<T>>;
+    constructor(_baseConfiguration: BaseConfiguration<T>, workspaceConfiguration: ConfigurationModel<T>, folders: StrictResourceMap<FolderConfigurationModel<T>>, workspace: Workspace);
+    updateBaseConfiguration(baseConfiguration: BaseConfiguration<T>): boolean;
+    updateWorkspaceConfiguration(workspaceConfiguration: ConfigurationModel<T>, compare?: boolean): boolean;
+    updateFolderConfiguration(resource: URI, configuration: FolderConfigurationModel<T>, compare: boolean): boolean;
+    deleteFolderConfiguration(folder: URI): boolean;
+    getFolderConfigurationModel(folder: URI): FolderConfigurationModel<T>;
+    equals(other: any): boolean;
+}

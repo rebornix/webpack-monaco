@@ -1,0 +1,30 @@
+import 'vs/css!./media/debugViewlet';
+import { Builder } from 'vs/base/browser/builder';
+import { TPromise } from 'vs/base/common/winjs.base';
+import { IAction } from 'vs/base/common/actions';
+import { IActionItem } from 'vs/base/browser/ui/actionbar/actionbar';
+import { PersistentViewsViewlet } from 'vs/workbench/parts/views/browser/views';
+import { IDebugService } from 'vs/workbench/parts/debug/common/debug';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { IExtensionService } from 'vs/platform/extensions/common/extensions';
+import { IProgressService } from 'vs/platform/progress/common/progress';
+import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
+import { IStorageService } from 'vs/platform/storage/common/storage';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+import { IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
+import { IContextMenuService } from 'vs/platform/contextview/browser/contextView';
+export declare class DebugViewlet extends PersistentViewsViewlet {
+    private progressService;
+    private debugService;
+    private actions;
+    private startDebugActionItem;
+    private progressRunner;
+    constructor(telemetryService: ITelemetryService, progressService: IProgressService, debugService: IDebugService, instantiationService: IInstantiationService, contextService: IWorkspaceContextService, storageService: IStorageService, themeService: IThemeService, contextKeyService: IContextKeyService, contextMenuService: IContextMenuService, extensionService: IExtensionService);
+    create(parent: Builder): TPromise<void>;
+    focus(): void;
+    getActions(): IAction[];
+    getSecondaryActions(): IAction[];
+    getActionItem(action: IAction): IActionItem;
+    private onDebugServiceStateChange(state);
+}

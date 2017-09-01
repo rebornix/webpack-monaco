@@ -1,0 +1,1 @@
+{"version":3,"file":"replaceContributions.js","sourceRoot":"file:///Users/penlv/code/vscode/src","sources":["vs/workbench/parts/search/browser/replaceContributions.ts"],"names":[],"mappings":";;;IAUA;QACC,8BAAiB,CAAC,yBAAe,EAAE,+BAAc,CAAC,CAAC;QACnD,mBAAQ,CAAC,EAAE,CAAkC,0BAAmB,CAAC,SAAS,CAAC,CAAC,6BAA6B,CAAC,8CAA6B,CAAC,CAAC;IAC1I,CAAC;IAHD,sDAGC"}

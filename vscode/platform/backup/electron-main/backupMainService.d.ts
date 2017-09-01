@@ -1,0 +1,37 @@
+import { IBackupWorkspacesFormat, IBackupMainService } from 'vs/platform/backup/common/backup';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
+import { ILogService } from 'vs/platform/log/common/log';
+import { IWorkspaceIdentifier, ISingleFolderWorkspaceIdentifier, IWorkspacesMainService } from 'vs/platform/workspaces/common/workspaces';
+export declare class BackupMainService implements IBackupMainService {
+    private configurationService;
+    private logService;
+    private workspacesService;
+    _serviceBrand: any;
+    protected backupHome: string;
+    protected workspacesJsonPath: string;
+    protected backups: IBackupWorkspacesFormat;
+    constructor(environmentService: IEnvironmentService, configurationService: IConfigurationService, logService: ILogService, workspacesService: IWorkspacesMainService);
+    getWorkspaceBackups(): IWorkspaceIdentifier[];
+    getFolderBackupPaths(): string[];
+    isHotExitEnabled(): boolean;
+    private isHotExitOnExitAndWindowClose();
+    private getHotExitConfig();
+    getEmptyWindowBackupPaths(): string[];
+    registerWorkspaceBackupSync(workspace: IWorkspaceIdentifier, migrateFrom?: string): string;
+    private moveBackupFolderSync(backupPath, moveFromPath);
+    registerFolderBackupSync(folderPath: string): string;
+    registerEmptyWindowBackupSync(backupFolder?: string): string;
+    private pushBackupPathsSync(workspaceIdentifier, target);
+    protected removeBackupPathSync(workspaceIdentifier: IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier, target: (IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier)[]): void;
+    private indexOf(workspaceIdentifier, target);
+    private sanitizeId(workspaceIdentifier);
+    protected loadSync(): void;
+    protected dedupeBackups(backups: IBackupWorkspacesFormat): IBackupWorkspacesFormat;
+    private validateBackupWorkspaces(backups);
+    private hasBackupsSync(backupPath);
+    private saveSync();
+    private getRandomEmptyWindowId();
+    private sanitizePath(p);
+    protected getFolderHash(folderPath: string): string;
+}

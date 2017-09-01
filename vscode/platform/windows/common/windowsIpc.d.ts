@@ -1,0 +1,130 @@
+import { TPromise } from 'vs/base/common/winjs.base';
+import Event from 'vs/base/common/event';
+import { IChannel } from 'vs/base/parts/ipc/common/ipc';
+import { IWindowsService, INativeOpenDialogOptions } from './windows';
+import { IWorkspaceIdentifier, ISingleFolderWorkspaceIdentifier } from 'vs/platform/workspaces/common/workspaces';
+import { IRecentlyOpened } from 'vs/platform/history/common/history';
+export interface IWindowsChannel extends IChannel {
+    call(command: 'event:onWindowOpen'): TPromise<number>;
+    call(command: 'event:onWindowFocus'): TPromise<number>;
+    call(command: 'event:onWindowBlur'): TPromise<number>;
+    call(command: 'pickFileFolderAndOpen', arg: INativeOpenDialogOptions): TPromise<void>;
+    call(command: 'pickFileAndOpen', arg: INativeOpenDialogOptions): TPromise<void>;
+    call(command: 'pickFolderAndOpen', arg: INativeOpenDialogOptions): TPromise<void>;
+    call(command: 'reloadWindow', arg: number): TPromise<void>;
+    call(command: 'toggleDevTools', arg: number): TPromise<void>;
+    call(command: 'closeWorkspace', arg: number): TPromise<void>;
+    call(command: 'openWorkspace', arg: number): TPromise<void>;
+    call(command: 'createAndOpenWorkspace', arg: [number, string[], string]): TPromise<void>;
+    call(command: 'saveAndOpenWorkspace', arg: [number, string]): TPromise<void>;
+    call(command: 'toggleFullScreen', arg: number): TPromise<void>;
+    call(command: 'setRepresentedFilename', arg: [number, string]): TPromise<void>;
+    call(command: 'addRecentlyOpened', arg: string[]): TPromise<void>;
+    call(command: 'removeFromRecentlyOpened', arg: (IWorkspaceIdentifier | ISingleFolderWorkspaceIdentifier)[]): TPromise<void>;
+    call(command: 'clearRecentlyOpened'): TPromise<void>;
+    call(command: 'getRecentlyOpened', arg: number): TPromise<IRecentlyOpened>;
+    call(command: 'focusWindow', arg: number): TPromise<void>;
+    call(command: 'closeWindow', arg: number): TPromise<void>;
+    call(command: 'isFocused', arg: number): TPromise<boolean>;
+    call(command: 'isMaximized', arg: number): TPromise<boolean>;
+    call(command: 'maximizeWindow', arg: number): TPromise<void>;
+    call(command: 'unmaximizeWindow', arg: number): TPromise<void>;
+    call(command: 'onWindowTitleDoubleClick', arg: number): TPromise<void>;
+    call(command: 'setDocumentEdited', arg: [number, boolean]): TPromise<void>;
+    call(command: 'quit'): TPromise<void>;
+    call(command: 'openWindow', arg: [string[], {
+        forceNewWindow?: boolean;
+        forceReuseWindow?: boolean;
+        forceOpenWorkspaceAsFile?: boolean;
+    }]): TPromise<void>;
+    call(command: 'openNewWindow'): TPromise<void>;
+    call(command: 'showWindow', arg: number): TPromise<void>;
+    call(command: 'getWindows'): TPromise<{
+        id: number;
+        workspace?: IWorkspaceIdentifier;
+        folderPath?: string;
+        title: string;
+        filename?: string;
+    }[]>;
+    call(command: 'getWindowCount'): TPromise<number>;
+    call(command: 'relaunch', arg: {
+        addArgs?: string[];
+        removeArgs?: string[];
+    }): TPromise<number>;
+    call(command: 'whenSharedProcessReady'): TPromise<void>;
+    call(command: 'toggleSharedProcess'): TPromise<void>;
+    call(command: 'log', arg: [string, string[]]): TPromise<void>;
+    call(command: 'showItemInFolder', arg: string): TPromise<void>;
+    call(command: 'openExternal', arg: string): TPromise<boolean>;
+    call(command: 'startCrashReporter', arg: Electron.CrashReporterStartOptions): TPromise<void>;
+    call(command: string, arg?: any): TPromise<any>;
+}
+export declare class WindowsChannel implements IWindowsChannel {
+    private service;
+    private onWindowOpen;
+    private onWindowFocus;
+    private onWindowBlur;
+    constructor(service: IWindowsService);
+    call(command: string, arg?: any): TPromise<any>;
+}
+export declare class WindowsChannelClient implements IWindowsService {
+    private channel;
+    _serviceBrand: any;
+    constructor(channel: IWindowsChannel);
+    private _onWindowOpen;
+    readonly onWindowOpen: Event<number>;
+    private _onWindowFocus;
+    readonly onWindowFocus: Event<number>;
+    private _onWindowBlur;
+    readonly onWindowBlur: Event<number>;
+    pickFileFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
+    pickFileAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
+    pickFolderAndOpen(options: INativeOpenDialogOptions): TPromise<void>;
+    reloadWindow(windowId: number): TPromise<void>;
+    openDevTools(windowId: number): TPromise<void>;
+    toggleDevTools(windowId: number): TPromise<void>;
+    closeWorkspace(windowId: number): TPromise<void>;
+    openWorkspace(windowId: number): TPromise<void>;
+    createAndOpenWorkspace(windowId: number, folders?: string[], path?: string): TPromise<void>;
+    saveAndOpenWorkspace(windowId: number, path: string): TPromise<void>;
+    toggleFullScreen(windowId: number): TPromise<void>;
+    setRepresentedFilename(windowId: number, fileName: string): TPromise<void>;
+    addRecentlyOpened(files: string[]): TPromise<void>;
+    removeFromRecentlyOpened(paths: string[]): TPromise<void>;
+    clearRecentlyOpened(): TPromise<void>;
+    getRecentlyOpened(windowId: number): TPromise<IRecentlyOpened>;
+    focusWindow(windowId: number): TPromise<void>;
+    closeWindow(windowId: number): TPromise<void>;
+    isFocused(windowId: number): TPromise<boolean>;
+    isMaximized(windowId: number): TPromise<boolean>;
+    maximizeWindow(windowId: number): TPromise<void>;
+    unmaximizeWindow(windowId: number): TPromise<void>;
+    onWindowTitleDoubleClick(windowId: number): TPromise<void>;
+    setDocumentEdited(windowId: number, flag: boolean): TPromise<void>;
+    quit(): TPromise<void>;
+    relaunch(options: {
+        addArgs?: string[];
+        removeArgs?: string[];
+    }): TPromise<void>;
+    whenSharedProcessReady(): TPromise<void>;
+    toggleSharedProcess(): TPromise<void>;
+    openWindow(paths: string[], options?: {
+        forceNewWindow?: boolean;
+        forceReuseWindow?: boolean;
+        forceOpenWorkspaceAsFile?: boolean;
+    }): TPromise<void>;
+    openNewWindow(): TPromise<void>;
+    showWindow(windowId: number): TPromise<void>;
+    getWindows(): TPromise<{
+        id: number;
+        workspace?: IWorkspaceIdentifier;
+        folderPath?: string;
+        title: string;
+        filename?: string;
+    }[]>;
+    getWindowCount(): TPromise<number>;
+    log(severity: string, ...messages: string[]): TPromise<void>;
+    showItemInFolder(path: string): TPromise<void>;
+    openExternal(url: string): TPromise<boolean>;
+    startCrashReporter(config: Electron.CrashReporterStartOptions): TPromise<void>;
+}

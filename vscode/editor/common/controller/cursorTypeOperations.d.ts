@@ -1,0 +1,35 @@
+import { CursorConfiguration, ICursorSimpleModel, EditOperationResult } from 'vs/editor/common/controller/cursorCommon';
+import { ICommand, ITokenizedModel } from 'vs/editor/common/editorCommon';
+import { Selection } from 'vs/editor/common/core/selection';
+export declare class TypeOperations {
+    static indent(config: CursorConfiguration, model: ICursorSimpleModel, selections: Selection[]): ICommand[];
+    static outdent(config: CursorConfiguration, model: ICursorSimpleModel, selections: Selection[]): ICommand[];
+    static shiftIndent(config: CursorConfiguration, indentation: string, count?: number): string;
+    static unshiftIndent(config: CursorConfiguration, indentation: string, count?: number): string;
+    private static _distributedPaste(config, model, selections, text);
+    private static _simplePaste(config, model, selections, text, pasteOnNewLine);
+    private static _distributePasteToCursors(selections, pasteOnNewLine, text);
+    static paste(config: CursorConfiguration, model: ICursorSimpleModel, selections: Selection[], pasteOnNewLine: boolean, text: string): EditOperationResult;
+    private static _goodIndentForLine(config, model, lineNumber);
+    private static _replaceJumpToNextIndent(config, model, selection, insertsAutoWhitespace);
+    static tab(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[]): ICommand[];
+    static replacePreviousChar(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[], txt: string, replaceCharCnt: number): EditOperationResult;
+    private static _typeCommand(range, text, keepPosition);
+    private static _enter(config, model, keepPosition, range);
+    private static _isAutoIndentType(config, model, selections);
+    private static _runAutoIndentType(config, model, range, ch);
+    private static _isAutoClosingCloseCharType(config, model, selections, ch);
+    private static _countNeedlesInHaystack(haystack, needle);
+    private static _runAutoClosingCloseCharType(config, model, selections, ch);
+    private static _isAutoClosingOpenCharType(config, model, selections, ch);
+    private static _runAutoClosingOpenCharType(config, model, selections, ch);
+    private static _isSurroundSelectionType(config, model, selections, ch);
+    private static _runSurroundSelectionType(config, model, selections, ch);
+    private static _isTypeInterceptorElectricChar(config, model, selections);
+    private static _typeInterceptorElectricChar(config, model, selection, ch);
+    static typeWithInterceptors(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[], ch: string): EditOperationResult;
+    static typeWithoutInterceptors(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[], str: string): EditOperationResult;
+    static lineInsertBefore(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[]): ICommand[];
+    static lineInsertAfter(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[]): ICommand[];
+    static lineBreakInsert(config: CursorConfiguration, model: ITokenizedModel, selections: Selection[]): ICommand[];
+}

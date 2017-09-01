@@ -1,0 +1,32 @@
+import { IWorkbenchContribution } from 'vs/workbench/common/contributions';
+import { IMessageService } from 'vs/platform/message/common/message';
+import { IPreferencesService } from 'vs/workbench/parts/preferences/common/preferences';
+import { IWindowsService, IWindowService } from 'vs/platform/windows/common/windows';
+import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { IExtensionService } from 'vs/platform/extensions/common/extensions';
+export declare class SettingsChangeRelauncher implements IWorkbenchContribution {
+    private windowsService;
+    private windowService;
+    private configurationService;
+    private preferencesService;
+    private envService;
+    private messageService;
+    private contextService;
+    private extensionService;
+    private toDispose;
+    private titleBarStyle;
+    private nativeTabs;
+    private updateChannel;
+    private enableCrashReporter;
+    private rootCount;
+    private firstRootPath;
+    constructor(windowsService: IWindowsService, windowService: IWindowService, configurationService: IConfigurationService, preferencesService: IPreferencesService, envService: IEnvironmentService, messageService: IMessageService, contextService: IWorkspaceContextService, extensionService: IExtensionService);
+    private registerListeners();
+    private onConfigurationChange(config, notify);
+    private onDidChangeWorkspaceRoots();
+    private doConfirm(message, detail, primaryButton, confirmed);
+    getId(): string;
+    dispose(): void;
+}

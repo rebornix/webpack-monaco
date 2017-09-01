@@ -1,0 +1,36 @@
+import { TPromise } from 'vs/base/common/winjs.base';
+import * as vscode from 'vscode';
+import { MainThreadLanguageFeaturesShape, IRawColorFormatMap, IExtHostContext } from '../node/extHost.protocol';
+import { IHeapService } from './mainThreadHeapService';
+import { IModeService } from 'vs/editor/common/services/modeService';
+export declare class MainThreadLanguageFeatures implements MainThreadLanguageFeaturesShape {
+    private _proxy;
+    private _heapService;
+    private _modeService;
+    private _registrations;
+    private _formatters;
+    constructor(extHostContext: IExtHostContext, heapService: IHeapService, modeService: IModeService);
+    dispose(): void;
+    $unregister(handle: number): TPromise<any>;
+    $registerOutlineSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerCodeLensSupport(handle: number, selector: vscode.DocumentSelector, eventHandle: number): TPromise<any>;
+    $emitCodeLensEvent(eventHandle: number, event?: any): TPromise<any>;
+    $registerDeclaractionSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerImplementationSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerTypeDefinitionSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerHoverProvider(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerDocumentHighlightProvider(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerReferenceSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerQuickFixSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerDocumentFormattingSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerRangeFormattingSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerOnTypeFormattingSupport(handle: number, selector: vscode.DocumentSelector, autoFormatTriggerCharacters: string[]): TPromise<any>;
+    $registerNavigateTypeSupport(handle: number): TPromise<any>;
+    $registerRenameSupport(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerSuggestSupport(handle: number, selector: vscode.DocumentSelector, triggerCharacters: string[]): TPromise<any>;
+    $registerSignatureHelpProvider(handle: number, selector: vscode.DocumentSelector, triggerCharacter: string[]): TPromise<any>;
+    $registerDocumentLinkProvider(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerDocumentColorProvider(handle: number, selector: vscode.DocumentSelector): TPromise<any>;
+    $registerColorFormats(formats: IRawColorFormatMap): TPromise<any>;
+    $setLanguageConfiguration(handle: number, languageId: string, _configuration: vscode.LanguageConfiguration): TPromise<any>;
+}

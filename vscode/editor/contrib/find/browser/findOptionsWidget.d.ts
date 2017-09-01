@@ -1,0 +1,30 @@
+import { Widget } from 'vs/base/browser/ui/widget';
+import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
+import { ICodeEditor, IOverlayWidget, IOverlayWidgetPosition } from 'vs/editor/browser/editorBrowser';
+import { FindReplaceState } from 'vs/editor/contrib/find/common/findState';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+export declare class FindOptionsWidget extends Widget implements IOverlayWidget {
+    private static ID;
+    private _editor;
+    private _state;
+    private _keybindingService;
+    private _domNode;
+    private regex;
+    private wholeWords;
+    private caseSensitive;
+    constructor(editor: ICodeEditor, state: FindReplaceState, keybindingService: IKeybindingService, themeService: IThemeService);
+    private _keybindingLabelFor(actionId);
+    dispose(): void;
+    getId(): string;
+    getDomNode(): HTMLElement;
+    getPosition(): IOverlayWidgetPosition;
+    highlightFindOptions(): void;
+    private _hideSoon;
+    private _revealTemporarily();
+    private _onMouseOut();
+    private _onMouseOver();
+    private _isVisible;
+    private _show();
+    private _hide();
+    private _applyTheme(theme);
+}

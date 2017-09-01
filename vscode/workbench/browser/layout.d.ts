@@ -1,0 +1,72 @@
+import { Builder } from 'vs/base/browser/builder';
+import { Part } from 'vs/workbench/browser/part';
+import { QuickOpenController } from 'vs/workbench/browser/parts/quickopen/quickOpenController';
+import { Sash, IVerticalSashLayoutProvider, IHorizontalSashLayoutProvider } from 'vs/base/browser/ui/sash/sash';
+import { IWorkbenchEditorService } from 'vs/workbench/services/editor/common/editorService';
+import { IPartService, ILayoutOptions, Parts } from 'vs/workbench/services/part/common/partService';
+import { IViewletService } from 'vs/workbench/services/viewlet/browser/viewlet';
+import { IStorageService } from 'vs/platform/storage/common/storage';
+import { IContextViewService } from 'vs/platform/contextview/browser/contextView';
+import { IEditorGroupService } from 'vs/workbench/services/group/common/groupService';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+/**
+ * The workbench layout is responsible to lay out all parts that make the Workbench.
+ */
+export declare class WorkbenchLayout implements IVerticalSashLayoutProvider, IHorizontalSashLayoutProvider {
+    private storageService;
+    private contextViewService;
+    private editorService;
+    private editorGroupService;
+    private partService;
+    private viewletService;
+    private static sashXWidthSettingsKey;
+    private static sashYHeightSettingsKey;
+    private parent;
+    private workbenchContainer;
+    private titlebar;
+    private activitybar;
+    private editor;
+    private sidebar;
+    private panel;
+    private statusbar;
+    private quickopen;
+    private toUnbind;
+    private partLayoutInfo;
+    private workbenchSize;
+    private sashX;
+    private sashY;
+    private startSidebarWidth;
+    private sidebarWidth;
+    private sidebarHeight;
+    private titlebarHeight;
+    private activitybarWidth;
+    private statusbarHeight;
+    private startPanelHeight;
+    private panelHeight;
+    private panelHeightBeforeMaximized;
+    private panelMaximized;
+    private panelWidth;
+    private layoutEditorGroupsVertically;
+    constructor(parent: Builder, workbenchContainer: Builder, parts: {
+        titlebar: Part;
+        activitybar: Part;
+        editor: Part;
+        sidebar: Part;
+        panel: Part;
+        statusbar: Part;
+    }, quickopen: QuickOpenController, storageService: IStorageService, contextViewService: IContextViewService, editorService: IWorkbenchEditorService, editorGroupService: IEditorGroupService, partService: IPartService, viewletService: IViewletService, themeService: IThemeService);
+    private getPartLayoutInfo();
+    private registerSashListeners();
+    private onEditorsChanged();
+    private onGroupOrientationChanged();
+    layout(options?: ILayoutOptions): void;
+    getVerticalSashTop(sash: Sash): number;
+    getVerticalSashLeft(sash: Sash): number;
+    getVerticalSashHeight(sash: Sash): number;
+    getHorizontalSashTop(sash: Sash): number;
+    getHorizontalSashLeft(sash: Sash): number;
+    getHorizontalSashWidth(sash: Sash): number;
+    isPanelMaximized(): boolean;
+    resizePart(part: Parts, sizeChange: number): void;
+    dispose(): void;
+}

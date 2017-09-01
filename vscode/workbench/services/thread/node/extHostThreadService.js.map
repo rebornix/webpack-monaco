@@ -1,0 +1,1 @@
+{"version":3,"file":"extHostThreadService.js","sourceRoot":"file:///Users/penlv/code/vscode/src","sources":["vs/workbench/services/thread/node/extHostThreadService.ts"],"names":[],"mappings":";;;;;;;;;;;IAAA;;;oGAGgG;IAChG,YAAY,CAAC;;IAMb;QAA0C,wCAAqB;QAC9D,8BAAY,WAAwB;mBACnC,kBAAM,WAAW,EAAE,KAAK,CAAC;QAC1B,CAAC;QACF,2BAAC;IAAD,CAAC,AAJD,CAA0C,6CAAqB,GAI9D;IAJY,oDAAoB"}

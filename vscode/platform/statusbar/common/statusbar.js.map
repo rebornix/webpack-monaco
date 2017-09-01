@@ -1,0 +1,1 @@
+{"version":3,"file":"statusbar.js","sourceRoot":"file:///Users/penlv/code/vscode/src","sources":["vs/platform/statusbar/common/statusbar.ts"],"names":[],"mappings":"AAAA;;;gGAGgG;;IAEhG,YAAY,CAAC;;IAMA,QAAA,iBAAiB,GAAG,+BAAe,CAAoB,kBAAkB,CAAC,CAAC;IAExF,IAAY,kBAEX;IAFD,WAAY,kBAAkB;QAC7B,2DAAI,CAAA;QAAE,6DAAK,CAAA;IACZ,CAAC,EAFW,kBAAkB,GAAlB,0BAAkB,KAAlB,0BAAkB,QAE7B"}

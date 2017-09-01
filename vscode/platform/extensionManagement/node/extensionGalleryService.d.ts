@@ -1,0 +1,36 @@
+import { TPromise } from 'vs/base/common/winjs.base';
+import { StatisticType, IGalleryExtension, IExtensionGalleryService, IQueryOptions, IExtensionManifest } from 'vs/platform/extensionManagement/common/extensionManagement';
+import { IRequestService } from 'vs/platform/request/node/request';
+import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
+import { IPager } from 'vs/base/common/paging';
+import { IConfigurationService } from 'vs/platform/configuration/common/configuration';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+export declare class ExtensionGalleryService implements IExtensionGalleryService {
+    private requestService;
+    private environmentService;
+    private telemetryService;
+    private configurationService;
+    _serviceBrand: any;
+    private extensionsGalleryUrl;
+    private readonly commonHTTPHeaders;
+    constructor(requestService: IRequestService, environmentService: IEnvironmentService, telemetryService: ITelemetryService, configurationService: IConfigurationService);
+    private api(path?);
+    isEnabled(): boolean;
+    query(options?: IQueryOptions): TPromise<IPager<IGalleryExtension>>;
+    private queryGallery(query);
+    reportStatistic(publisher: string, name: string, version: string, type: StatisticType): TPromise<void>;
+    download(extension: IGalleryExtension): TPromise<string>;
+    getReadme(extension: IGalleryExtension): TPromise<string>;
+    getManifest(extension: IGalleryExtension): TPromise<IExtensionManifest>;
+    getChangelog(extension: IGalleryExtension): TPromise<string>;
+    getAllDependencies(extension: IGalleryExtension): TPromise<IGalleryExtension[]>;
+    loadCompatibleVersion(extension: IGalleryExtension): TPromise<IGalleryExtension>;
+    private loadDependencies(extensionNames);
+    private getDependenciesReccursively(toGet, result, root);
+    private getAsset(asset, options?);
+    private getLastValidExtensionVersion(extension, versions);
+    private getLastValidExtensionVersionFromProperties(extension, versions);
+    private getLastValidExtensionVersionReccursively(extension, versions);
+    private isEngineValid(engine);
+    private static hasExtensionByName(extensions, name);
+}

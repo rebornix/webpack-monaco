@@ -1,0 +1,38 @@
+import { IWorkbenchContribution } from 'vs/workbench/common/contributions';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import './mainThreadCommands';
+import './mainThreadConfiguration';
+import './mainThreadCredentials';
+import './mainThreadDebugService';
+import './mainThreadDiagnostics';
+import './mainThreadDialogs';
+import './mainThreadDocumentContentProviders';
+import './mainThreadDocuments';
+import './mainThreadDocumentsAndEditors';
+import './mainThreadEditor';
+import './mainThreadEditors';
+import './mainThreadErrors';
+import './mainThreadExtensionService';
+import './mainThreadFileSystemEventService';
+import './mainThreadHeapService';
+import './mainThreadLanguageFeatures';
+import './mainThreadLanguages';
+import './mainThreadMessageService';
+import './mainThreadOutputService';
+import './mainThreadProgress';
+import './mainThreadQuickOpen';
+import './mainThreadSCM';
+import './mainThreadSaveParticipant';
+import './mainThreadStatusBar';
+import './mainThreadStorage';
+import './mainThreadTask';
+import './mainThreadTelemetry';
+import './mainThreadTerminalService';
+import './mainThreadTreeViews';
+import './mainThreadWindow';
+import './mainThreadWorkspace';
+export declare class ExtensionPoints implements IWorkbenchContribution {
+    private instantiationService;
+    constructor(instantiationService: IInstantiationService);
+    getId(): string;
+}

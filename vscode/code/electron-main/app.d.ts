@@ -1,0 +1,34 @@
+import * as platform from 'vs/base/common/platform';
+import { ILifecycleService } from 'vs/platform/lifecycle/electron-main/lifecycleMain';
+import { Server } from 'vs/base/parts/ipc/node/ipc.net';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { ILogService } from 'vs/platform/log/common/log';
+import { IStorageService } from 'vs/platform/storage/node/storage';
+import { IEnvironmentService } from 'vs/platform/environment/common/environment';
+import { ConfigurationService } from 'vs/platform/configuration/node/configurationService';
+import { IHistoryMainService } from 'vs/platform/history/common/history';
+export declare class CodeApplication {
+    private mainIpcServer;
+    private userEnv;
+    private instantiationService;
+    private logService;
+    private environmentService;
+    private lifecycleService;
+    private configurationService;
+    private storageService;
+    private historyService;
+    private static APP_ICON_REFRESH_KEY;
+    private toDispose;
+    private windowsMainService;
+    private electronIpcServer;
+    private sharedProcess;
+    private sharedProcessClient;
+    constructor(mainIpcServer: Server, userEnv: platform.IProcessEnvironment, instantiationService: IInstantiationService, logService: ILogService, environmentService: IEnvironmentService, lifecycleService: ILifecycleService, configurationService: ConfigurationService<any>, storageService: IStorageService, historyService: IHistoryMainService);
+    private registerListeners();
+    private onBroadcast(event, payload);
+    startup(): void;
+    private initServices();
+    private openFirstWindow(accessor);
+    private afterWindowOpen(accessor);
+    private dispose();
+}

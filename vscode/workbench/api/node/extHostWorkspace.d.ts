@@ -1,0 +1,32 @@
+import URI from 'vs/base/common/uri';
+import Event from 'vs/base/common/event';
+import { Workspace } from 'vs/platform/workspace/common/workspace';
+import { TPromise } from 'vs/base/common/winjs.base';
+import { IWorkspaceData, ExtHostWorkspaceShape, IMainContext } from './extHost.protocol';
+import * as vscode from 'vscode';
+export declare class ExtHostWorkspace implements ExtHostWorkspaceShape {
+    private static _requestIdPool;
+    private readonly _onDidChangeWorkspace;
+    private readonly _proxy;
+    private _workspace;
+    readonly onDidChangeWorkspace: Event<vscode.WorkspaceFoldersChangeEvent>;
+    constructor(mainContext: IMainContext, data: IWorkspaceData);
+    readonly workspace: Workspace;
+    getWorkspaceFolders(): vscode.WorkspaceFolder[];
+    getWorkspaceFolder(uri: vscode.Uri): vscode.WorkspaceFolder;
+    getPath(): string;
+    getRelativePath(pathOrUri: string | vscode.Uri, includeWorkspace?: boolean): string;
+    $acceptWorkspaceData(data: IWorkspaceData): void;
+    private static _compareWorkspaceFolder(a, b);
+    findFiles(include: string, exclude: string, maxResults?: number, token?: vscode.CancellationToken): Thenable<vscode.Uri[]>;
+    saveAll(includeUntitled?: boolean): Thenable<boolean>;
+    appyEdit(edit: vscode.WorkspaceEdit): TPromise<boolean>;
+    private _handlePool;
+    private readonly _fsProvider;
+    private readonly _searchSession;
+    registerFileSystemProvider(authority: string, provider: vscode.FileSystemProvider): vscode.Disposable;
+    $resolveFile(handle: number, resource: URI): TPromise<string>;
+    $storeFile(handle: number, resource: URI, content: string): TPromise<any>;
+    $startSearch(handle: number, session: number, query: string): void;
+    $cancelSearch(handle: number, session: number): void;
+}

@@ -1,0 +1,78 @@
+import { TPromise } from 'vs/base/common/winjs.base';
+import { IPagedModel } from 'vs/base/common/paging';
+import { IMessageService } from 'vs/platform/message/common/message';
+import { IExtensionTipsService } from 'vs/platform/extensionManagement/common/extensionManagement';
+import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
+import { IContextMenuService } from 'vs/platform/contextview/browser/contextView';
+import { IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
+import { ICommandService } from 'vs/platform/commands/common/commands';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { IExtension, IExtensionsWorkbenchService } from '../common/extensions';
+import { IListService } from 'vs/platform/list/browser/listService';
+import { IExtensionService } from 'vs/platform/extensions/common/extensions';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+import { CollapsibleView, IViewletViewOptions } from 'vs/workbench/parts/views/browser/views';
+import { IWorkbenchEditorService } from 'vs/workbench/services/editor/common/editorService';
+import { IEditorGroupService } from 'vs/workbench/services/group/common/groupService';
+import { IModeService } from 'vs/editor/common/services/modeService';
+import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
+import { IProgressService } from 'vs/platform/progress/common/progress';
+export declare class ExtensionsListView extends CollapsibleView {
+    private options;
+    private messageService;
+    private instantiationService;
+    private listService;
+    private themeService;
+    private contextKeyService;
+    private extensionService;
+    private commandService;
+    private extensionsWorkbenchService;
+    private editorService;
+    private editorInputService;
+    private tipsService;
+    private modeService;
+    private telemetryService;
+    private progressService;
+    private messageBox;
+    private extensionsList;
+    private badge;
+    private list;
+    private disposables;
+    constructor(initialSize: number, options: IViewletViewOptions, messageService: IMessageService, keybindingService: IKeybindingService, contextMenuService: IContextMenuService, instantiationService: IInstantiationService, listService: IListService, themeService: IThemeService, contextKeyService: IContextKeyService, extensionService: IExtensionService, commandService: ICommandService, extensionsWorkbenchService: IExtensionsWorkbenchService, editorService: IWorkbenchEditorService, editorInputService: IEditorGroupService, tipsService: IExtensionTipsService, modeService: IModeService, telemetryService: ITelemetryService, progressService: IProgressService);
+    renderHeader(container: HTMLElement): void;
+    renderBody(container: HTMLElement): void;
+    setVisible(visible: boolean): TPromise<void>;
+    layoutBody(size: number): void;
+    show(query: string): TPromise<IPagedModel<IExtension>>;
+    select(): void;
+    showPrevious(): void;
+    showPreviousPage(): void;
+    showNext(): void;
+    showNextPage(): void;
+    count(): number;
+    private query(value);
+    private getAllRecommendationsModel(query, options);
+    private getRecommendationsModel(query, options);
+    private getWorkspaceRecommendationsModel(query, options);
+    private getKeymapRecommendationsModel(query, options);
+    private setModel(model);
+    private openExtension(extension);
+    private pin();
+    private onError(err);
+    dispose(): void;
+    static isInstalledExtensionsQuery(query: string): boolean;
+    static isOutdatedExtensionsQuery(query: string): boolean;
+    static isDisabledExtensionsQuery(query: string): boolean;
+    static isEnabledExtensionsQuery(query: string): boolean;
+    static isRecommendedExtensionsQuery(query: string): boolean;
+    static isWorkspaceRecommendedExtensionsQuery(query: string): boolean;
+    static isKeymapsRecommendedExtensionsQuery(query: string): boolean;
+}
+export declare class InstalledExtensionsView extends ExtensionsListView {
+    static isInsalledExtensionsQuery(query: string): boolean;
+    show(query: string): TPromise<IPagedModel<IExtension>>;
+}
+export declare class RecommendedExtensionsView extends ExtensionsListView {
+    static isRecommendedExtensionsQuery(query: string): boolean;
+    show(query: string): TPromise<IPagedModel<IExtension>>;
+}

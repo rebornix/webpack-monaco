@@ -1,0 +1,136 @@
+import * as lifecycle from 'vs/base/common/lifecycle';
+import Event from 'vs/base/common/event';
+import Uri from 'vs/base/common/uri';
+import { Dimension } from 'vs/base/browser/builder';
+import { IContextKeyService, IContextKey } from 'vs/platform/contextkey/common/contextkey';
+import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
+import { IMessageService } from 'vs/platform/message/common/message';
+import { IPanelService } from 'vs/workbench/services/panel/common/panelService';
+import { IStringDictionary } from 'vs/base/common/collections';
+import { ITerminalInstance, IShellLaunchConfig } from 'vs/workbench/parts/terminal/common/terminal';
+import { ITerminalProcessFactory } from 'vs/workbench/parts/terminal/electron-browser/terminal';
+import { IWorkspaceContextService } from 'vs/platform/workspace/common/workspace';
+import { IWorkbenchEditorService } from 'vs/workbench/services/editor/common/editorService';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { TerminalConfigHelper } from 'vs/workbench/parts/terminal/electron-browser/terminalConfigHelper';
+import { IClipboardService } from 'vs/platform/clipboard/common/clipboardService';
+import { IHistoryService } from 'vs/workbench/services/history/common/history';
+export declare class TerminalInstance implements ITerminalInstance {
+    private _terminalFocusContextKey;
+    private _configHelper;
+    private _container;
+    private _shellLaunchConfig;
+    private _contextKeyService;
+    private _keybindingService;
+    private _messageService;
+    private _panelService;
+    private _contextService;
+    private _editorService;
+    private _instantiationService;
+    private _clipboardService;
+    private _historyService;
+    private static readonly EOL_REGEX;
+    private static _terminalProcessFactory;
+    private static _lastKnownDimensions;
+    private static _idCounter;
+    private _id;
+    private _isExiting;
+    private _hadFocusOnExit;
+    private _isVisible;
+    private _processState;
+    private _processReady;
+    private _isDisposed;
+    private _onDisposed;
+    private _onDataForApi;
+    private _onProcessIdReady;
+    private _onTitleChanged;
+    private _process;
+    private _processId;
+    private _skipTerminalCommands;
+    private _title;
+    private _instanceDisposables;
+    private _processDisposables;
+    private _wrapperElement;
+    private _xterm;
+    private _xtermElement;
+    private _terminalHasTextContextKey;
+    private _cols;
+    private _rows;
+    private _messageTitleListener;
+    private _preLaunchInputQueue;
+    private _initialCwd;
+    private _windowsShellHelper;
+    private _widgetManager;
+    private _linkHandler;
+    readonly id: number;
+    readonly processId: number;
+    readonly onDisposed: Event<ITerminalInstance>;
+    readonly onDataForApi: Event<{
+        instance: ITerminalInstance;
+        data: string;
+    }>;
+    readonly onProcessIdReady: Event<TerminalInstance>;
+    readonly onTitleChanged: Event<string>;
+    readonly title: string;
+    readonly hadFocusOnExit: boolean;
+    readonly isTitleSetByProcess: boolean;
+    constructor(_terminalFocusContextKey: IContextKey<boolean>, _configHelper: TerminalConfigHelper, _container: HTMLElement, _shellLaunchConfig: IShellLaunchConfig, _contextKeyService: IContextKeyService, _keybindingService: IKeybindingService, _messageService: IMessageService, _panelService: IPanelService, _contextService: IWorkspaceContextService, _editorService: IWorkbenchEditorService, _instantiationService: IInstantiationService, _clipboardService: IClipboardService, _historyService: IHistoryService);
+    addDisposable(disposable: lifecycle.IDisposable): void;
+    private _initDimensions();
+    /**
+     * Evaluates and sets the cols and rows of the terminal if possible.
+     * @param width The width of the container.
+     * @param height The height of the container.
+     * @return The terminal's width if it requires a layout.
+     */
+    private _evaluateColsAndRows(width, height);
+    private _getDimension(width, height);
+    /**
+     * Create xterm.js instance and attach data listeners.
+     */
+    protected _createXterm(): void;
+    attachToElement(container: HTMLElement): void;
+    registerLinkMatcher(regex: RegExp, handler: (url: string) => void, matchIndex?: number, validationCallback?: (uri: string, element: HTMLElement, callback: (isValid: boolean) => void) => void): number;
+    deregisterLinkMatcher(linkMatcherId: number): void;
+    hasSelection(): boolean;
+    copySelection(): void;
+    readonly selection: string | undefined;
+    clearSelection(): void;
+    selectAll(): void;
+    findNext(term: string): boolean;
+    findPrevious(term: string): boolean;
+    notifyFindWidgetFocusChanged(isFocused: boolean): void;
+    dispose(): void;
+    focus(force?: boolean): void;
+    paste(): void;
+    sendText(text: string, addNewLine: boolean): void;
+    setVisible(visible: boolean): void;
+    scrollDownLine(): void;
+    scrollDownPage(): void;
+    scrollToBottom(): void;
+    scrollUpLine(): void;
+    scrollUpPage(): void;
+    scrollToTop(): void;
+    clear(): void;
+    private _refreshSelectionContextKey();
+    protected _getCwd(shell: IShellLaunchConfig, root: Uri): string;
+    protected _createProcess(): void;
+    private _sendPtyDataToXterm(message);
+    private _onPtyProcessExit(exitCode);
+    private _attachPressAnyKeyToCloseListener();
+    reuseTerminal(shell?: IShellLaunchConfig): void;
+    static createTerminalEnv(parentEnv: IStringDictionary<string>, shell: IShellLaunchConfig, cwd: string, locale?: string, cols?: number, rows?: number): IStringDictionary<string>;
+    onData(listener: (data: string) => void): lifecycle.IDisposable;
+    onExit(listener: (exitCode: number) => void): lifecycle.IDisposable;
+    private static _sanitizeCwd(cwd);
+    private static _cloneEnv(env);
+    private static _getLangEnvVariable(locale?);
+    updateConfig(): void;
+    private _setCursorBlink(blink);
+    private _setCursorStyle(style);
+    private _setCommandsToSkipShell(commands);
+    private _setScrollback(lineCount);
+    layout(dimension: Dimension): void;
+    static setTerminalProcessFactory(factory: ITerminalProcessFactory): void;
+    setTitle(title: string, eventFromProcess: boolean): void;
+}

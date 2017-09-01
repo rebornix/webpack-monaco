@@ -1,0 +1,36 @@
+import { ResolvedKeybinding, Keybinding } from 'vs/base/common/keyCodes';
+import { IDisposable } from 'vs/base/common/lifecycle';
+import { ICommandService } from 'vs/platform/commands/common/commands';
+import { KeybindingResolver, IResolveResult } from 'vs/platform/keybinding/common/keybindingResolver';
+import { IKeybindingEvent, IKeybindingService, IKeyboardEvent } from 'vs/platform/keybinding/common/keybinding';
+import { IContextKeyService, IContextKeyServiceTarget } from 'vs/platform/contextkey/common/contextkey';
+import { IStatusbarService } from 'vs/platform/statusbar/common/statusbar';
+import { IMessageService } from 'vs/platform/message/common/message';
+import Event, { Emitter } from 'vs/base/common/event';
+import { ResolvedKeybindingItem } from 'vs/platform/keybinding/common/resolvedKeybindingItem';
+export declare abstract class AbstractKeybindingService implements IKeybindingService {
+    _serviceBrand: any;
+    protected toDispose: IDisposable[];
+    private _currentChord;
+    private _currentChordStatusMessage;
+    protected _onDidUpdateKeybindings: Emitter<IKeybindingEvent>;
+    private _contextKeyService;
+    protected _commandService: ICommandService;
+    private _statusService;
+    private _messageService;
+    constructor(contextKeyService: IContextKeyService, commandService: ICommandService, messageService: IMessageService, statusService?: IStatusbarService);
+    dispose(): void;
+    readonly onDidUpdateKeybindings: Event<IKeybindingEvent>;
+    protected abstract _getResolver(): KeybindingResolver;
+    abstract resolveKeybinding(keybinding: Keybinding): ResolvedKeybinding[];
+    abstract resolveKeyboardEvent(keyboardEvent: IKeyboardEvent): ResolvedKeybinding;
+    abstract resolveUserBinding(userBinding: string): ResolvedKeybinding[];
+    getDefaultKeybindingsContent(): string;
+    getDefaultKeybindings(): ResolvedKeybindingItem[];
+    getKeybindings(): ResolvedKeybindingItem[];
+    customKeybindingsCount(): number;
+    lookupKeybindings(commandId: string): ResolvedKeybinding[];
+    lookupKeybinding(commandId: string): ResolvedKeybinding;
+    softDispatch(e: IKeyboardEvent, target: IContextKeyServiceTarget): IResolveResult;
+    protected _dispatch(e: IKeyboardEvent, target: IContextKeyServiceTarget): boolean;
+}

@@ -1,0 +1,30 @@
+import { OverviewRulerZone } from 'vs/editor/common/view/overviewZoneManager';
+import { Color } from 'vs/base/common/color';
+import { OverviewRulerPosition } from 'vs/editor/common/config/editorOptions';
+import { ThemeType } from 'vs/platform/theme/common/themeService';
+export declare class OverviewRulerImpl {
+    private _canvasLeftOffset;
+    private _domNode;
+    private _lanesCount;
+    private _zoneManager;
+    private _background;
+    constructor(canvasLeftOffset: number, cssClassName: string, scrollHeight: number, lineHeight: number, pixelRatio: number, minimumHeight: number, maximumHeight: number, getVerticalOffsetForLine: (lineNumber: number) => number);
+    dispose(): void;
+    setLayout(position: OverviewRulerPosition, render: boolean): void;
+    getLanesCount(): number;
+    setLanesCount(newLanesCount: number, render: boolean): void;
+    setThemeType(themeType: ThemeType, render: boolean): void;
+    setUseBackground(background: Color, render: boolean): void;
+    getDomNode(): HTMLCanvasElement;
+    getPixelWidth(): number;
+    getPixelHeight(): number;
+    setScrollHeight(scrollHeight: number, render: boolean): void;
+    setLineHeight(lineHeight: number, render: boolean): void;
+    setPixelRatio(pixelRatio: number, render: boolean): void;
+    setZones(zones: OverviewRulerZone[], render: boolean): void;
+    render(forceRender: boolean): boolean;
+    private _renderOneLane(ctx, colorZones, id2Color, w);
+    private _renderTwoLanes(ctx, colorZones, id2Color, w);
+    private _renderThreeLanes(ctx, colorZones, id2Color, w);
+    private _renderVerticalPatch(ctx, colorZones, id2Color, laneMask, xpos, width);
+}

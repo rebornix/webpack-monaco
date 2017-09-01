@@ -1,0 +1,111 @@
+import 'vs/css!./media/titlecontrol';
+import { IAction, Action } from 'vs/base/common/actions';
+import { TPromise } from 'vs/base/common/winjs.base';
+import { IEditorStacksModel, IEditorGroup, IEditorIdentifier } from 'vs/workbench/common/editor';
+import { IActionItem } from 'vs/base/browser/ui/actionbar/actionbar';
+import { ToolBar } from 'vs/base/browser/ui/toolbar/toolbar';
+import { IWorkbenchEditorService } from 'vs/workbench/services/editor/common/editorService';
+import { IContextMenuService } from 'vs/platform/contextview/browser/contextView';
+import { IEditorGroupService } from 'vs/workbench/services/group/common/groupService';
+import { IMessageService } from 'vs/platform/message/common/message';
+import { ITelemetryService } from 'vs/platform/telemetry/common/telemetry';
+import { IInstantiationService } from 'vs/platform/instantiation/common/instantiation';
+import { IQuickOpenService } from 'vs/platform/quickOpen/common/quickOpen';
+import { IKeybindingService } from 'vs/platform/keybinding/common/keybinding';
+import { ResolvedKeybinding } from 'vs/base/common/keyCodes';
+import { IContextKeyService } from 'vs/platform/contextkey/common/contextkey';
+import { CloseEditorsInGroupAction, SplitEditorAction, CloseEditorAction, KeepEditorAction, CloseOtherEditorsInGroupAction, CloseRightEditorsInGroupAction, ShowEditorsInGroupAction, CloseUnmodifiedEditorsInGroupAction } from 'vs/workbench/browser/parts/editor/editorActions';
+import { IMenuService } from 'vs/platform/actions/common/actions';
+import { IThemeService } from 'vs/platform/theme/common/themeService';
+import { Themable } from 'vs/workbench/common/theme';
+import { IDraggedResource } from 'vs/base/browser/dnd';
+import { IWorkspacesService } from 'vs/platform/workspaces/common/workspaces';
+import { IFileService } from 'vs/platform/files/common/files';
+import { IWindowsService, IWindowService } from 'vs/platform/windows/common/windows';
+export interface IToolbarActions {
+    primary: IAction[];
+    secondary: IAction[];
+}
+export interface ITitleAreaControl {
+    setContext(group: IEditorGroup): void;
+    hasContext(): boolean;
+    allowDragging(element: HTMLElement): boolean;
+    setDragged(dragged: boolean): void;
+    create(parent: HTMLElement): void;
+    getContainer(): HTMLElement;
+    refresh(instant?: boolean): void;
+    update(instant?: boolean): void;
+    layout(): void;
+    dispose(): void;
+}
+export declare abstract class TitleControl extends Themable implements ITitleAreaControl {
+    protected contextMenuService: IContextMenuService;
+    protected instantiationService: IInstantiationService;
+    protected editorService: IWorkbenchEditorService;
+    protected editorGroupService: IEditorGroupService;
+    protected contextKeyService: IContextKeyService;
+    protected keybindingService: IKeybindingService;
+    protected telemetryService: ITelemetryService;
+    protected messageService: IMessageService;
+    protected menuService: IMenuService;
+    protected quickOpenService: IQuickOpenService;
+    protected themeService: IThemeService;
+    private static draggedEditor;
+    protected stacks: IEditorStacksModel;
+    protected context: IEditorGroup;
+    protected dragged: boolean;
+    protected closeEditorAction: CloseEditorAction;
+    protected pinEditorAction: KeepEditorAction;
+    protected closeOtherEditorsAction: CloseOtherEditorsInGroupAction;
+    protected closeRightEditorsAction: CloseRightEditorsInGroupAction;
+    protected closeUnmodifiedEditorsInGroupAction: CloseUnmodifiedEditorsInGroupAction;
+    protected closeEditorsInGroupAction: CloseEditorsInGroupAction;
+    protected splitEditorAction: SplitEditorAction;
+    protected showEditorsInGroupAction: ShowEditorsInGroupAction;
+    private parent;
+    private currentPrimaryEditorActionIds;
+    private currentSecondaryEditorActionIds;
+    protected editorActionsToolbar: ToolBar;
+    private mapActionsToEditors;
+    private scheduler;
+    private refreshScheduled;
+    private resourceContext;
+    private disposeOnEditorActions;
+    private contextMenu;
+    constructor(contextMenuService: IContextMenuService, instantiationService: IInstantiationService, editorService: IWorkbenchEditorService, editorGroupService: IEditorGroupService, contextKeyService: IContextKeyService, keybindingService: IKeybindingService, telemetryService: ITelemetryService, messageService: IMessageService, menuService: IMenuService, quickOpenService: IQuickOpenService, themeService: IThemeService);
+    static getDraggedEditor(): IEditorIdentifier;
+    setDragged(dragged: boolean): void;
+    protected onEditorDragStart(editor: IEditorIdentifier): void;
+    protected onEditorDragEnd(): void;
+    private registerListeners();
+    private onStacksChanged(e);
+    private updateSplitActionEnablement();
+    protected updateStyles(): void;
+    private onSchedule();
+    setContext(group: IEditorGroup): void;
+    hasContext(): boolean;
+    update(instant?: boolean): void;
+    refresh(instant?: boolean): void;
+    create(parent: HTMLElement): void;
+    getContainer(): HTMLElement;
+    protected abstract doRefresh(): void;
+    protected doUpdate(): void;
+    layout(): void;
+    allowDragging(element: HTMLElement): boolean;
+    protected initActions(services: IInstantiationService): void;
+    protected createEditorActionsToolBar(container: HTMLElement): void;
+    protected actionItemProvider(action: Action): IActionItem;
+    protected getEditorActions(identifier: IEditorIdentifier): IToolbarActions;
+    protected updateEditorActionsToolbar(): void;
+    protected clearEditorActionsToolbar(): void;
+    protected onContextMenu(identifier: IEditorIdentifier, e: Event, node: HTMLElement): void;
+    protected getKeybinding(action: IAction): ResolvedKeybinding;
+    protected getKeybindingLabel(action: IAction): string;
+    protected getContextMenuActions(identifier: IEditorIdentifier): IAction[];
+    dispose(): void;
+}
+/**
+ * Shared function across some editor components to handle drag & drop of folders and workspace files
+ * to open them in the window instead of the editor.
+ */
+export declare function handleWorkspaceExternalDrop(resources: IDraggedResource[], fileService: IFileService, messageService: IMessageService, windowsService: IWindowsService, windowService: IWindowService, workspacesService: IWorkspacesService): TPromise<boolean>;
